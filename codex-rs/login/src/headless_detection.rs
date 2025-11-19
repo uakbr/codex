@@ -65,35 +65,35 @@ mod tests {
 
     #[test]
     fn detects_ssh_connection() {
-        let _guard = temp_env::with_var("SSH_CONNECTION", Some("127.0.0.1"), || {
+        temp_env::with_var("SSH_CONNECTION", Some("127.0.0.1"), || {
             assert!(is_headless_environment());
         });
     }
 
     #[test]
     fn detects_ssh_client() {
-        let _guard = temp_env::with_var("SSH_CLIENT", Some("127.0.0.1"), || {
+        temp_env::with_var("SSH_CLIENT", Some("127.0.0.1"), || {
             assert!(is_headless_environment());
         });
     }
 
     #[test]
     fn detects_ssh_tty() {
-        let _guard = temp_env::with_var("SSH_TTY", Some("/dev/pts/0"), || {
+        temp_env::with_var("SSH_TTY", Some("/dev/pts/0"), || {
             assert!(is_headless_environment());
         });
     }
 
     #[test]
     fn detects_codespaces() {
-        let _guard = temp_env::with_var("CODESPACE_NAME", Some("my-codespace"), || {
+        temp_env::with_var("CODESPACE_NAME", Some("my-codespace"), || {
             assert!(is_headless_environment());
         });
     }
 
     #[test]
     fn detects_vscode_remote_containers() {
-        let _guard = temp_env::with_var("REMOTE_CONTAINERS", Some("true"), || {
+        temp_env::with_var("REMOTE_CONTAINERS", Some("true"), || {
             assert!(is_headless_environment());
         });
     }

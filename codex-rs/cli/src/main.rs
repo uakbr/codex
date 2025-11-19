@@ -194,7 +194,6 @@ struct LoginCommand {
     )]
     force_browser: bool,
 
-    /// EXPERIMENTAL: Use custom OAuth issuer base URL (advanced)
     /// Override the OAuth issuer base URL (advanced)
     #[arg(long = "experimental_issuer", value_name = "URL", hide = true)]
     issuer_base_url: Option<String>,
