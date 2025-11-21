@@ -32,5 +32,6 @@ webbrowser = { workspace = true }
 [dev-dependencies]
 anyhow = { workspace = true }
 core_test_support = { workspace = true }
+temp-env = "0.3"
 tempfile = { workspace = true }
 wiremock = { workspace = true }

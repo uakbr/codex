@@ -199,10 +199,19 @@ struct LoginCommand {
     )]
     api_key: Option<String>,
 
-    #[arg(long = "device-auth")]
+    #[arg(
+        long = "device-auth",
+        help = "Use device code flow (copy-paste authentication code). This is automatically enabled in headless/remote environments."
+    )]
     use_device_code: bool,
 
-    /// EXPERIMENTAL: Use custom OAuth issuer base URL (advanced)
+    #[arg(
+        long = "browser",
+        help = "Force browser-based login with localhost callback, even in headless environments (useful when port forwarding is set up)",
+        conflicts_with = "use_device_code"
+    )]
+    force_browser: bool,
+
     /// Override the OAuth issuer base URL (advanced)
     #[arg(long = "experimental_issuer", value_name = "URL", hide = true)]
     issuer_base_url: Option<String>,
@@ -498,7 +507,13 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
                     run_login_status(login_cli.config_overrides).await;
                 }
                 None => {
-                    if login_cli.use_device_code {
+                    // Determine if we should use device code flow:
+                    // 1. Explicit --device-auth flag
+                    // 2. Auto-detected headless environment (unless --browser is specified)
+                    let use_device_code = login_cli.use_device_code
+                        || (!login_cli.force_browser && codex_login::is_headless_environment());
+
+                    if use_device_code {
                         run_login_with_device_code(
                             login_cli.config_overrides,
                             login_cli.issuer_base_url,
